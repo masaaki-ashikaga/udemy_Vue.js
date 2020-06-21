@@ -1,17 +1,29 @@
 <template>
 <div>
   <LikeHeader></LikeHeader>
-  <LikeNumber></LikeNumber>
+  <h2>{{ number }}</h2>
+  <LikeNumber :total-number="number"></LikeNumber>
+  <LikeNumber :total-number="number"></LikeNumber>
 </div>
 </template>
 
-
 <script>
-import LikeHeader from "./LikeHeader.vue";
+import LikeHeader from "./components/LikeHeader.vue";
 
 export default {
+  data(){
+    return{
+      number: 14
+    };
+  },
   components:{
     LikeHeader
   }
 }
 </script>
+
+<style scoped>
+  div{
+    border: 1px solid blue;
+  }
+</style>
