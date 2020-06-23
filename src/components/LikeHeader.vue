@@ -1,6 +1,8 @@
 <template>
     <div>
-    <slot></slot>
+    <slot>
+        <h2>デフォルトのタイトル</h2>
+    </slot>
     </div>
 </template>
 
@@ -9,3 +11,12 @@ export default {
     props: ["headerText"]
 };
 </script>
+
+<style scoped>
+  div{
+    border: 1px solid blue;
+  }
+  h1{
+    color: red;
+  }
+</style>
