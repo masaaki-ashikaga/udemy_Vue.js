@@ -1,18 +1,3 @@
 <template>
-    <div>
-        <slot></slot>
-    </div>
+    <h1>トータルのいいね数</h1>
 </template>
-
-<script>
-export default {
-    data(){
-        return{
-            user:{
-                firstName: 'Jack',
-                lastName: 'Donald'
-            }
-        }
-    }
-};
-</script>
