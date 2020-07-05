@@ -1,3 +1,3 @@
 <template>
-    <p v-border>Home</p>
+    <p>Home</p>
 </template>

@@ -2,8 +2,8 @@
     <div>
         <label for="title">タイトル</label>
         <input
-            type="text"
             id="title"
+            type="text"
             :value="value"
             @input="$emit('input', $event.target.value)"
         >
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-export default {
-    props: ["value"]
+export default{
+    props:['value']
 };
 </script>
