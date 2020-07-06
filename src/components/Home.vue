@@ -1,13 +1,27 @@
 <template>
-    <p v-border:solid.round.shadow="{width: '5px', color: 'red'}">{{ tmpData }}</p>
+<div>
+    <p v-border:solid.round.shadow="{width: '5px', color: 'red'}">Hello</p>
+    <h2>{{title | lowerCase}}</h2>
+    <p>{{subTitle | lowerCase}}</p>
+    <p>{{number}}</p>
+    <button @click="number++">+1</button>
+    <CountNumber></CountNumber>
+</div>
 </template>
 
 <script>
+import CountNumber from "./CountNumber";
+import {tokyoNumber} from "@/tokyoNumber";
+
     export default{
-        data(){
-            return{
-                tmpData: 'Hello'
-            }
+        mixins:[tokyoNumber],
+        // data(){
+        //     return{
+        //         tmpData: 'Hello',
+        //     };
+        // },
+        components:{
+            CountNumber
         },
         directives: {
             border(el, binding){
