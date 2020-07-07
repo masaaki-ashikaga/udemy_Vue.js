@@ -1,6 +1,12 @@
 <template>
-  <div class="main">
-    <button @click="myAnimation='slide'">Slide</button>
+  <div style="width: 500px; padding-top: 50px; margin: auto; text-align: center;">
+    <router-view name="header"></router-view>
+    <transition name="fade" mode="out-in" @before-enter="beforeEnter">
+    <router-view></router-view>
+    </transition>
+  </div>
+  <!-- <div class="main"> -->
+    <!-- <button @click="myAnimation='slide'">Slide</button>
     <button @click="myAnimation='fade'">Fade</button>
     <p>{{myAnimation}}</p>
     <br>
@@ -16,10 +22,10 @@
       >{{number}}
     </li>
     </transition-group>
-  </ul>
+  </ul> -->
 
 
-    <button @click="show = !show">切り替え</button>
+    <!-- <button @click="show = !show">切り替え</button>
     <br>
     <transition
     :css="false"
@@ -30,9 +36,9 @@
       <div class="circle" v-if="show"></div>
     </transition>
     <br>
+ -->
 
-
-    <button @click="myComponent='ComponentA'">ComponentA</button>
+    <!-- <button @click="myComponent='ComponentA'">ComponentA</button>
     <button @click="myComponent='ComponentB'">ComponentB</button>
     <transition name="fade" mode="out-in">
       <component :is="myComponent"></component>
@@ -56,68 +62,89 @@
     >
       <p v-if="show">bye</p>
     </transition>
-  </div>
+  </div> -->
 </template>
 
 <script>
-import ComponentA from "./components/ComponentA.vue";
-import ComponentB from "./components/ComponentB.vue";
 export default{
-  components:{
-    ComponentA,
-    ComponentB,
-  },
-  data(){
-    return {
-      numbers: [0, 1, 2],
-      nextNumber: 3,
-      show: true,
-      myAnimation: "slide",
-      myComponent: "ComponentA",
-    };
-  },
-  methods: {
-    remove(index){
-      this.number.splice(index, 1);
-    },
-    randomIndex(){
-      return Math.floor(Math.random() * this.numbers.length);
-    },
-    add(){
-      this.numbers.splice(this.randomIndex(), 0, this.nextNumber);
-      this.nextNubmer += 1;
-    },
-    beforeEnter(el){
-      el.style.transform = 'scale(0)';
-    },
-    enter(el, done){
-      let scale = 0;
-      const interval = setInterval(() => {
-        el.style.transform = `scale(${scale})`;
-        scale += 0.1
-        if(scale > 1){
-          clearInterval(interval);
-          done();
-        }
-      }, 20)
-    },
-    leave(el, done){
-      let scale = 1;
-      const interval = setInterval(() => {
-        el.style.transform = `scale(${scale})`;
-        scale -= 0.1
-        if(scale < 0){
-          clearInterval(interval);
-          done();
-        }
-      }, 20)
-    },
-  },
-}
+  methods:{
+    beforeEnter(){
+      this.$root.$emit('triggerScroll');
+    }
+  }
+};
+// import ComponentA from "./components/ComponentA.vue";
+// import ComponentB from "./components/ComponentB.vue";
+// export default{
+//   components:{
+//     ComponentA,
+//     ComponentB,
+//   },
+//   data(){
+//     return {
+//       numbers: [0, 1, 2],
+//       nextNumber: 3,
+//       show: true,
+//       myAnimation: "slide",
+//       myComponent: "ComponentA",
+//     };
+//   },
+  // methods: {
+  //   remove(index){
+  //     this.number.splice(index, 1);
+  //   },
+  //   randomIndex(){
+  //     return Math.floor(Math.random() * this.numbers.length);
+  //   },
+  //   add(){
+  //     this.numbers.splice(this.randomIndex(), 0, this.nextNumber);
+  //     this.nextNubmer += 1;
+  //   },
+  //   beforeEnter(el){
+  //     el.style.transform = 'scale(0)';
+  //   },
+  //   enter(el, done){
+  //     let scale = 0;
+  //     const interval = setInterval(() => {
+  //       el.style.transform = `scale(${scale})`;
+  //       scale += 0.1
+  //       if(scale > 1){
+  //         clearInterval(interval);
+  //         done();
+  //       }
+  //     }, 20)
+  //   },
+//     leave(el, done){
+//       let scale = 1;
+//       const interval = setInterval(() => {
+//         el.style.transform = `scale(${scale})`;
+//         scale -= 0.1
+//         if(scale < 0){
+//           clearInterval(interval);
+//           done();
+//         }
+//       }, 20)
+//     },
+//   },
+// }
 </script>
 
 <style scoped>
-.circle{
+.link{
+  margin-right: 10px;
+}
+.link--active{
+  font-size: 20px;
+}
+.fade-enter,
+.fade-leave-to{
+  opacity: 0;
+}
+.fade-enter-active,
+.fade-leave-acitve{
+  transition: opacity 0.5s;
+}
+/* .circle{
   width: 200px;
   height: 200px;
   margin: auto;
@@ -174,5 +201,5 @@ export default{
   padding-top: 5rem;
   margin: auto;
   text-align: center;
-}
+} */
 </style>
