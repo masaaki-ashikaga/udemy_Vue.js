@@ -1,205 +1,71 @@
 <template>
-  <div style="width: 500px; padding-top: 50px; margin: auto; text-align: center;">
-    <router-view name="header"></router-view>
-    <transition name="fade" mode="out-in" @before-enter="beforeEnter">
-    <router-view></router-view>
-    </transition>
+  <div id="app">
+    <h3>掲示板に投稿する</h3>
+    <label for="name">ニックネーム：</label>
+    <input id="name" type="text" v-model="name">
+    <br><br>
+    <label for="comment">コメント：</label>
+    <textarea id="comment" v-model="comment"></textarea>
+    <br><br>
+    <button @click="createComment">コメントをサーバーに送る</button>
+    <h2>掲示板</h2>
+    <div v-for="post in posts" :key="post.name">
+      <br>
+      <div>名前：{{post.fields.name.stringValue}}</div>
+      <div>コメント：{{post.fields.comment.stringValue}}</div>
+    </div>
   </div>
-  <!-- <div class="main"> -->
-    <!-- <button @click="myAnimation='slide'">Slide</button>
-    <button @click="myAnimation='fade'">Fade</button>
-    <p>{{myAnimation}}</p>
-    <br>
-
-  <ul style="width: 200px; margin: auto;">
-    <button @click="add">追加</button>
-    <transition-group name="fade">
-    <li
-      style="cursor: pointer"
-      v-for="(number,index) in numbers"
-      :key="number"
-      @click="remove(index)"
-      >{{number}}
-    </li>
-    </transition-group>
-  </ul> -->
-
-
-    <!-- <button @click="show = !show">切り替え</button>
-    <br>
-    <transition
-    :css="false"
-      @before-enter="beforeEnter"
-      @enter="enter"
-      @leave="leave"
-    >
-      <div class="circle" v-if="show"></div>
-    </transition>
-    <br>
- -->
-
-    <!-- <button @click="myComponent='ComponentA'">ComponentA</button>
-    <button @click="myComponent='ComponentB'">ComponentB</button>
-    <transition name="fade" mode="out-in">
-      <component :is="myComponent"></component>
-    </transition>
-
-
-    <transition name="fade" mode="out-in">
-      <p v-if="show" key="bye">さよなら</p>
-      <p v-if="!show" key="hello">こんにちは</p>
-    </transition>
-    <transition
-      enter-active-class="animate__animated animate__bounce"
-      leave-active-class="animate__animated animate__shake"
-      appear
-    >
-    <p v-if="show">hello</p>
-    </transition>
-    <transition
-      :name="myAnimation"
-      appear
-    >
-      <p v-if="show">bye</p>
-    </transition>
-  </div> -->
 </template>
 
 <script>
-export default{
-  methods:{
-    beforeEnter(){
-      this.$root.$emit('triggerScroll');
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      name: "",
+      comment: "",
+      posts: [],
+    };
+  },
+  created() {
+    axios.get(
+      '/comments'
+      )
+      .then(response => {
+        this.posts = response.data.documents;
+      });
+  },
+  methods: {
+    createComment(){
+      axios
+      .post(
+        '/comments',
+        {
+          fields: {
+            name: {
+              stringValue: this.name
+            },
+            comment: {
+              stringValue: this.comment
+            }
+          }
+        }
+      );
+      this.name = '';
+      this.comment = '';
     }
   }
 };
-// import ComponentA from "./components/ComponentA.vue";
-// import ComponentB from "./components/ComponentB.vue";
-// export default{
-//   components:{
-//     ComponentA,
-//     ComponentB,
-//   },
-//   data(){
-//     return {
-//       numbers: [0, 1, 2],
-//       nextNumber: 3,
-//       show: true,
-//       myAnimation: "slide",
-//       myComponent: "ComponentA",
-//     };
-//   },
-  // methods: {
-  //   remove(index){
-  //     this.number.splice(index, 1);
-  //   },
-  //   randomIndex(){
-  //     return Math.floor(Math.random() * this.numbers.length);
-  //   },
-  //   add(){
-  //     this.numbers.splice(this.randomIndex(), 0, this.nextNumber);
-  //     this.nextNubmer += 1;
-  //   },
-  //   beforeEnter(el){
-  //     el.style.transform = 'scale(0)';
-  //   },
-  //   enter(el, done){
-  //     let scale = 0;
-  //     const interval = setInterval(() => {
-  //       el.style.transform = `scale(${scale})`;
-  //       scale += 0.1
-  //       if(scale > 1){
-  //         clearInterval(interval);
-  //         done();
-  //       }
-  //     }, 20)
-  //   },
-//     leave(el, done){
-//       let scale = 1;
-//       const interval = setInterval(() => {
-//         el.style.transform = `scale(${scale})`;
-//         scale -= 0.1
-//         if(scale < 0){
-//           clearInterval(interval);
-//           done();
-//         }
-//       }, 20)
-//     },
-//   },
-// }
 </script>
 
 <style scoped>
-.link{
-  margin-right: 10px;
-}
-.link--active{
-  font-size: 20px;
-}
-.fade-enter,
-.fade-leave-to{
-  opacity: 0;
-}
-.fade-enter-active,
-.fade-leave-acitve{
-  transition: opacity 0.5s;
-}
-/* .circle{
-  width: 200px;
-  height: 200px;
-  margin: auto;
-  background: deeppink;
-  border-radius: 100px;
-}
-
-.fade-move{
-  transition: transform
-}
-.fade-enter{
-  opacity: 0;
-}
-.fade-enter-active{
-  transition: opacity 1s;
-}
-.fade-enter-to{
-  opacity: 1;
-}
-.fade-leave{
-  opacity: 1;
-}
-.fade-leave-active{
-  transition: opacity 1s;
-}
-.fade-leave-to{
-  opacity: 0;
-}
-
-.slide-enter,
-.slide-leave-to{
-  opacity: 0;
-}
-.slide-enter-active{
-  animation: slide-in 0.5s;
-  transition: opacity 0.5s;
-}
-.slide-leave-active{
-  animation: slide-in 0.5s reverse;
-  transition: opacity 0.5s;
-}
-
-@keyframes slide-in{
-  from{
-    transform: translateX(100px);
-  }
-  to{
-    transform: translateX(0);
-  }
-}
-
-.main{
-  width: 70%;
-  padding-top: 5rem;
-  margin: auto;
+#app{
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-align: center;
-} */
+  color: #2c3e50;
+  margin-top: 60px;
+}
 </style>
